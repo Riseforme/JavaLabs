@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Lab5</title>
+    <script type="module" src="src/index.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Lab5</h1>
+        <div class="statistcs">
+            <table class="statistics-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                    <th>Категория</th>
+                    <th>Описание</th>
+                </tr>
+            </table>
+            <div class="total-amount">
+                Общая сумма транзакций: <span>0</span>
+            </div>
+            <div class="full-description">
+                
+            </div>
+        </div>
+        <div class="add-transaction">
+            <form action="#">
+                <h2>Добавить транзакцию</h2>
+                <label for="sum">Введите сумму: </label><input id="sum" name="sum" type="number">
+                <label for="category">Выберите категорию: </label><select name="category">
+                    <option value="Продукты">Продукты</option>
+                    <option value="Аренда">Аренда</option>
+                    <option value="Развлечения">Развлечения</option>
+                    <option value="Транспорт">Транспорт</option>
+                    <option value="Одежда">Одежда</option>
+                </select>
+                <label for="description">Введите описание транзакции: </label>
+                <textarea name="description" id="description"></textarea>
+                <button id="check-form__btn" type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

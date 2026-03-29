@@ -1,0 +1,26 @@
+.statistics-table {
+    margin: 0 auto;
+}
+td, th {
+    border: 1px solid red;
+    padding: 10px 20px;
+}
+td {
+    color: #fff;
+}
+.add-transaction form {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+.delete-btn {
+    background-color: rgb(47, 0, 255);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+}
+.total-amount {
+
+}

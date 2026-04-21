@@ -1,0 +1,105 @@
+body {
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+h1 {
+    transition: color 0.3s ease;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 55px;
+}
+h1, p, input {
+    font-family: Arial, sans-serif;
+}
+#inputText {
+    width: 65%;
+    height: 40px;
+    font-size: 17px;
+    border: none;
+    padding-left: 15px;
+    border-radius: 9px;
+}
+#inputText:focus {
+    outline: none !important;
+    border: none;
+}
+.textToPrint {
+    color: #b17609;
+    text-align: center;
+    font-size: 45px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    letter-spacing: 0.2em;
+}
+.duration_container {
+    padding-top: 20px;
+}
+.keyboard {
+    display: table;
+    margin: 0 auto;
+    padding-top: 70px;
+    user-select: none;
+}
+.line {
+    display: flex;
+    gap: 5px;
+    padding-top: 6px;
+}
+.line2 {
+    padding-left: 25px;
+}
+.line3 {
+    padding-left: 53px;
+}
+.key {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 25px;
+    color: rgb(47, 96, 202);
+    font-size: 35px;
+    transition: all 0.3s ease;
+}
+.delete {
+    width: 150px;
+    margin-left: auto;
+    margin-right: -100px;
+}
+.shift {
+    margin-left: -155px;
+    width: 153px;
+}
+.alt {
+    margin-left: 144px;
+}
+.space {
+    width: 500px;
+}
+.key.active {
+    box-shadow: 0px 0px 25px 8px #40a8f7;
+    color: #ffdada;
+    background: #40a8f7;
+}
+.active-text {
+    color: #f3bf5f;
+}
+.active-symbol {
+    color:yellow;
+    position: relative;
+}
+.active-symbol::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 4px;
+    width: 3px;
+    height: 55px;
+    background-color: #f3bf5f;
+}

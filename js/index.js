@@ -1,5 +1,4 @@
 import {getWords,  findCurKey, preparatoryWork} from "./utils.js"
-import { printing, setActiveKey, activeKeys} from "./ui.js"
 
 
 

@@ -1,4 +1,5 @@
 import { changeLanguage, findCurKey} from "./utils.js"
+import { data, incorrectArr, linesArr, results } from "./index.js";
 
 let textToPrintInput = document.querySelector(".textToPrint");
 let durationDiv = document.querySelector(".duration");
@@ -319,4 +320,29 @@ languages.forEach(radio => {
     radio.addEventListener('change', (event) => {
       changeLanguage(event.target.id);
     });
-  });
+});
+
+  document.addEventListener("keydown", e => {
+  if (e.code == 'Space' && e.target == document.body)
+    e.preventDefault();
+
+  if (e.altKey && e.shiftKey && activeKeys.length === 2)
+    if (e.key == "Shift" || e.key == "Alt") {
+      let wasChangingLang = [false, false];
+
+      for (let i of activeKeys) {
+        if (i.classList.contains("shift"))
+          wasChangingLang[0] = true;
+        else if (i.classList.contains("alt"))
+          wasChangingLang[1] = true;
+
+        if (wasChangingLang[0] && wasChangingLang[1]) {
+          setActiveKey(findCurKey(linesArr, data.curLine, data.curSymbolIdx, incorrectArr));
+          break;
+        }
+      }
+    }
+
+  
+  printing(e.key, linesArr, incorrectArr, results, data, data.language);
+});

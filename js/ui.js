@@ -29,12 +29,12 @@ export function updateResults(results) {
         <li>Время: ${item.duration}</li>
         <li>Набранное количество символов: ${item.symbolsCnt}</li>
         <li>Допущенное количество ошибок: ${item.totalMistakes}</li>
-        <li>Набранная скорость: ${Math.floor(60 / item.duration * item.symbolsCnt)}</li>
+        <li>Набранная скорость: ${Math.floor(60 * item.symbolsCnt / item.duration )}</li>
       </ul>
     `
   })
 
-  let averageSpeed = Math.floor(60 / totalDuration * totalsymbols);
+  let averageSpeed = Math.floor(60 * totalsymbols / totalDuration);
   resContainer.innerHTML += `Средняя скорость (количество символов в минуту): ${averageSpeed}`;
 }
 

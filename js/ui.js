@@ -102,6 +102,10 @@ export function setActiveKey(char) {
 }
 
 export function printing(pressedKey, linesArr, incorrectArr, results, data, language) {
+  if (!linesArr[data.curLine]) {
+    console.error("Ошибка: нет текущей строки", data.curLine);
+    return;
+  }
   let access = /^.$|(Backspace)/.test(pressedKey);
   if (!access || linesArr.length < 1) return;
   if (activeKeys.find(i => i.classList.contains("shift")) && activeKeys.find(i => i.classList.contains("alt")) && activeKeys.length === 2) 

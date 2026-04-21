@@ -1,12 +1,5 @@
 import {getWords,  findCurKey, preparatoryWork} from "./utils.js"
 import { printing, setActiveKey, activeKeys} from "./ui.js"
-/*
-1) Получаю данные
-2) Перемешиваю массив
-3) Делю массив на несколько строк из 10 слов
-4) Сохраняю количество пройденных строк, текущую вывожу на экран
-*/
-
 
 
 

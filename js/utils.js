@@ -56,7 +56,7 @@ export function formLines(wordsArr, linesArr, wordsInLineCnt) {
     linesArr[i] = wordsArr.slice(wordsInLineCnt*i, wordsInLineCnt*(i+1)).reduce((acc, item) => `${acc}${item} `, "");
   }
 
-  if (linesCnt % 10 > 0) {
+  if (wordsArr.length % wordsInLineCnt > 0) {
     let obtainedWords = wordsInLineCnt * linesCnt,
         rest = wordsArr.length - obtainedWords,
         lastLineBegin = wordsArr.length - rest;

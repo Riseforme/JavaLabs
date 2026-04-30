@@ -1,41 +1,80 @@
-import { changeLanguage, findCurKey} from "./utils.js"
-import { data, incorrectArr, linesArr, results } from "./index.js";
+import { changeLanguage, changeDifficulty, findCurKey} from "./utils.js"
+import { data, incorrectArr, linesArr, topResultsArr } from "./index.js";
+
 
 let textToPrintInput = document.querySelector(".textToPrint");
 let durationDiv = document.querySelector(".duration");
 let resContainer = document.querySelector(".results");
 // Получаем все радио-кнопки по имени
 const languages = document.querySelectorAll('input[name="lang"]');
+const difficulties = document.querySelectorAll('input[name="difficulty"]');
+
+export function initializeParams() {
+  languages.forEach(radio => {
+    if (data.language === radio.id) radio.checked = true
+  });
+  difficulties.forEach(radio => {
+    if (data.difficulty === radio.id) radio.checked = true
+  });
+}
+
+
+
+
+
 
 export let activeKeys = [];
 export let allKeys = document.querySelectorAll(".key");
            
- function renewKeys() {
+
+
+function renewKeys() {
   allKeys = document.querySelectorAll(".key");
 }
 
-export function updateResults(results) {
+export function updateResults(results, lastTryResult) {
   let totalsymbols = 0,
       totalDuration = 0;
 
-  resContainer.innerHTML = '';
-  results.forEach((item, idx) => {
-    totalsymbols += item.symbolsCnt;
-    totalDuration += item.duration;
+  if (results.length > 0) results.sort((a, b) => (b.symbolsCnt / b.duration) - (a.symbolsCnt / a.duration));
+  if (results.length > 5) results.length = 5;
 
-    resContainer.innerHTML += `
-      Попытка №${idx+1}: <br/>
-      <ul>
-        <li>Время: ${item.duration}</li>
-        <li>Набранное количество символов: ${item.symbolsCnt}</li>
-        <li>Допущенное количество ошибок: ${item.totalMistakes}</li>
-        <li>Набранная скорость: ${Math.floor(60 / item.duration * item.symbolsCnt)}</li>
-      </ul>
-    `
-  })
 
-  let averageSpeed = Math.floor(60 / totalDuration * totalsymbols);
-  resContainer.innerHTML += `Средняя скорость (количество символов в минуту): ${averageSpeed}`;
+
+  resContainer.innerHTML = "";
+
+  if (lastTryResult) {
+    resContainer.innerHTML = `<h2>Последняя попытка:</h2>
+                            <ul>
+                              <li>Время: ${lastTryResult.duration}</li>
+                              <li>Набранное количество символов: ${lastTryResult.symbolsCnt}</li>
+                              <li>Допущенное количество ошибок: ${lastTryResult.totalMistakes}</li>
+                              <li>Набранная скорость: ${Math.floor(60 * lastTryResult.symbolsCnt / lastTryResult.duration )}</li>
+                            </ul>
+                           `;
+  }
+  resContainer.innerHTML += `<h2>ТОП 5 попыток:</h2>`;
+  if (results.length > 0) {
+    results.forEach((item, idx) => {
+      totalsymbols += item.symbolsCnt;
+      totalDuration += item.duration;
+
+      resContainer.innerHTML += `
+        Попытка №${idx+1}: <br/>
+        <ul>
+          <li>Время: ${item.duration}</li>
+          <li>Набранное количество символов: ${item.symbolsCnt}</li>
+          <li>Допущенное количество ошибок: ${item.totalMistakes}</li>
+          <li>Набранная скорость: ${Math.floor(60 * item.symbolsCnt / item.duration )}</li>
+        </ul>
+      `
+    })
+
+    let averageSpeed = Math.floor(60 * totalsymbols / totalDuration);
+    resContainer.innerHTML += `Средняя скорость (количество символов в минуту): ${averageSpeed}`;
+  } else {
+    resContainer.innerHTML += "Пока нет данных о лучших попытках!";
+  }
 }
 
 export function formateString(str, activeIndex, incorrectArr) {
@@ -102,6 +141,10 @@ export function setActiveKey(char) {
 }
 
 export function printing(pressedKey, linesArr, incorrectArr, results, data, language) {
+  if (!linesArr[data.curLine]) {
+    console.error("Ошибка: нет текущей строки", data.curLine);
+    return;
+  }
   let access = /^.$|(Backspace)/.test(pressedKey);
   if (!access || linesArr.length < 1) return;
   if (activeKeys.find(i => i.classList.contains("shift")) && activeKeys.find(i => i.classList.contains("alt")) && activeKeys.length === 2) 
@@ -159,17 +202,23 @@ export function printing(pressedKey, linesArr, incorrectArr, results, data, lang
         clearInterval(window.updateTime);
         window.updateTime = undefined;
         // Сохраняю статистику
-        results.push({
+        data.lastTryResult = {
           duration: +durationDiv.textContent,
           symbolsCnt: linesArr[data.curLine].length,
           totalMistakes: data.incorrectTotal
-        });
+        };
+        if ((data.lastTryResult.symbolsCnt / data.lastTryResult.duration) > (results[results.length - 1]?.symbolsCnt / results[results.length - 1]?.duration) || results.length < 5) {
+          results.push(data.lastTryResult);
+          localStorage.setItem("topResults", JSON.stringify(results));
+          data.lastTryResult = null;
+        } 
+
 
         incorrectArr.length = 0;
         data.incorrectTotal = data.timeBegin = 0;
         data.curSymbolIdx = 0;
 
-        updateResults(results);
+        updateResults(results, data.lastTryResult);
         data.curLine++;
       } else 
         data.curSymbolIdx++;    
@@ -322,7 +371,14 @@ languages.forEach(radio => {
     });
 });
 
-  document.addEventListener("keydown", e => {
+// Событие смены сложности
+difficulties.forEach(radio => {
+  radio.addEventListener('change', (event) => 
+    changeDifficulty(event.target.id)
+  );
+});
+
+document.addEventListener("keydown", e => {
   if (e.code == 'Space' && e.target == document.body)
     e.preventDefault();
 
@@ -344,5 +400,5 @@ languages.forEach(radio => {
     }
 
   
-  printing(e.key, linesArr, incorrectArr, results, data, data.language);
+  printing(e.key, linesArr, incorrectArr, topResultsArr, data, data.language);
 });

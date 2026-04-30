@@ -1,5 +1,5 @@
 import { allKeys, formateString, setActiveKey, setKeyboard } from "./ui.js";
-import { ruWords, data, enWords, incorrectArr, linesArr } from "./index.js";
+import { ruWords, enWords, data, incorrectArr, linesArr } from "./index.js";
 
 export async function getWords() {
   let res = await fetch("../words.json");
@@ -21,9 +21,15 @@ export function shuffle(array) {
   }
 }
 
-export function preparatoryWork(ruWords, enWords, linesArr, data, incorrectArr ) {
-  (data.language === "ru") ? shuffle(ruWords) : shuffle(enWords);
-  formLines((data.language === "ru" ? ruWords : enWords), linesArr, 15);
+export function preparatoryWork( linesArr, data, incorrectArr ) {
+  if (["light", "medium", "hard"].indexOf(data.difficulty) === -1) {
+    console.error("Неверный уровень сложности!");
+    return;
+  }
+
+  let wordsArr = data.language === "ru" ? ruWords[data.difficulty] : enWords[data.difficulty];
+  shuffle(wordsArr);
+  formLines(wordsArr, linesArr, 15);
   formateString(linesArr[data.curLine], data.curSymbolIdx, incorrectArr);
   setKeyboard(data.language);
   setActiveKey(findCurKey(linesArr, data.curLine, data.curSymbolIdx, incorrectArr));
@@ -41,7 +47,7 @@ export function changeLanguage(lang) {
     window.updateTime = undefined;
   }
   
-  preparatoryWork(ruWords, enWords, linesArr, data, incorrectArr);
+  preparatoryWork(linesArr, data, incorrectArr);
 }
 
 export function formLines(wordsArr, linesArr, wordsInLineCnt) {
@@ -56,7 +62,7 @@ export function formLines(wordsArr, linesArr, wordsInLineCnt) {
     linesArr[i] = wordsArr.slice(wordsInLineCnt*i, wordsInLineCnt*(i+1)).reduce((acc, item) => `${acc}${item} `, "");
   }
 
-  if (linesCnt % 10 > 0) {
+  if (wordsArr.length % wordsInLineCnt > 0) {
     let obtainedWords = wordsInLineCnt * linesCnt,
         rest = wordsArr.length - obtainedWords,
         lastLineBegin = wordsArr.length - rest;
@@ -72,4 +78,20 @@ export function findCurKey(linesArr, curLine, curSymbolIdx, incorrectArr) {
     return allKeys[0].textContent; // delete key
   else
     return linesArr[curLine][curSymbolIdx];
+}
+
+export function changeDifficulty(difficulty) {
+  if (!difficulty || data.difficulty === difficulty || ["light", "medium", "hard"].indexOf(difficulty) === -1) return;
+
+
+  data.difficulty = difficulty;
+  data.curLine = data.curSymbolIdx = data.incorrectTotal = data.timeBegin = 0;
+  incorrectArr.length = 0;
+
+  if (window.updateTime) {
+    clearInterval(window.updateTime);
+    window.updateTime = undefined;
+  }
+
+  preparatoryWork(linesArr, data, incorrectArr);
 }

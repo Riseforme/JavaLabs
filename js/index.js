@@ -1,4 +1,5 @@
 import {getWords,  findCurKey, preparatoryWork} from "./utils.js"
+import { initializeParams, updateResults } from "./ui.js"
 
 
 
@@ -14,24 +15,29 @@ import {getWords,  findCurKey, preparatoryWork} from "./utils.js"
 export let ruWords = [], // массив русских слов
     enWords = [], // массив английских слов
     linesArr = [], // строки для ввода
-    results = [], // статистика
-    incorrectArr = []; // индексы символов, где допустили ошибку
+    incorrectArr = [], // индексы символов, где допустили ошибку
+    topResultsArr = JSON.parse(localStorage.getItem("topResults")) || []; // лучшие попытки
 
 
 export let data = {
-  language: "ru", // текущий язык
+  language: "en", // текущий язык
   timeBegin: 0, // время начала
   curLine: 0, // номер текущей строки
   curSymbolIdx: 0, // метка текущего символа для ввода
-  incorrectTotal: 0 // общее количество ошибок
+  incorrectTotal: 0, // общее количество ошибок
+  difficulty: "medium", // уровень сложности
+  lastTryResult: null // результат последней попытки
 }
+
+updateResults(topResultsArr, data.lastTryResult);
 
 
 getWords().then(d => {
   ruWords = d.ru;
   enWords = d.en;
-
-  preparatoryWork(ruWords, enWords, linesArr, data, incorrectArr);
+  
+  preparatoryWork(linesArr, data, incorrectArr);
+  initializeParams();
 })
 
 

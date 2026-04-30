@@ -9,22 +9,25 @@
 <body>
     <div class="container">
         <h1>Печать в слепую</h1>
-        <div class="lang-switcher">
-            <h3>Язык</h3>
-            <input type="radio" name="lang" id="ru" checked>
-            <label for="ru">RU</label>
-            <input type="radio" name="lang" id="en">
-            <label for="en">EN</label>
+        <div class="preferences">
+            <div class="lang-switcher">
+                <h3>Язык</h3>
+                <input type="radio" name="lang" id="ru" checked>
+                <label for="ru">RU</label>
+                <input type="radio" name="lang" id="en">
+                <label for="en">EN</label>
+            </div>
+            <div class="difficulty-sweatcher">
+                <h3>Сложность</h3>
+                <input type="radio" name="difficulty" id="light" checked>
+                <label for="light">Легко</label>
+                <input type="radio" name="difficulty" id="medium">
+                <label for="medium">Средне</label>
+                <input type="radio" name="difficulty" id="hard">
+                <label for="hard">Сложно</label>
+            </div>
         </div>
-        <div class="difficulty-sweatcher">
-            <h3>Сложность</h3>
-            <input type="radio" name="difficulty" id="light" checked>
-            <label for="light">Легко</label>
-            <input type="radio" name="difficulty" id="medium">
-            <label for="medium">Средне</label>
-            <input type="radio" name="difficulty" id="hard">
-            <label for="hard">Сложно</label>
-        </div>
+        
         <div class="textToPrint"></div>
         <div class="duration_container">
             Длительность:

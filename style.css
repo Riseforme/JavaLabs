@@ -16,6 +16,13 @@ h1 {
 h1, p, input {
     font-family: Arial, sans-serif;
 }
+.preferences {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 30px;
+    user-select: none   ;
+}
 #inputText {
     width: 65%;
     height: 40px;

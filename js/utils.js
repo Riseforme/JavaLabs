@@ -63,7 +63,6 @@ export function formLines(wordsArr, linesArr, wordsInLineCnt) {
   }
 
   if (wordsArr.length % wordsInLineCnt > 0) {
-  if (wordsArr.length % wordsInLineCnt > 0) {
     let obtainedWords = wordsInLineCnt * linesCnt,
         rest = wordsArr.length - obtainedWords,
         lastLineBegin = wordsArr.length - rest;

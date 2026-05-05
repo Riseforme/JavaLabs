@@ -89,7 +89,14 @@
     Также добавлено динамическое изменение цвета заголовка страницы:
 
     setInterval(() => {
-      title.style.color = `rgb(${random}, ${random}, ${random})`;
+      let title = document.querySelector("h1");
+      let newRGBColor = [];
+    
+      newRGBColor[0] = Math.floor(Math.random() * 125 + 130);
+      newRGBColor[1] = Math.floor(Math.random() * 240);
+      newRGBColor[2] = Math.floor(Math.random() * 240);
+    
+      title.style.color = `rgb(${newRGBColor[0]}, ${newRGBColor[1]}, ${newRGBColor[2]})`;
     }, 200);
     
   </li>
@@ -129,6 +136,16 @@
     </table>
   </li>
 </ol>
+
+<h1>Пример использования</h1>
+При попадании на главную страницу пользователь видит следующий контент: <br><br>
+<img width="1760" height="914" alt="image" src="https://github.com/user-attachments/assets/3a4c1f57-5557-4d5c-9b0d-12dc6dd87c21" />
+Сверху заголовок, под ним параметры: можно выбрать язык вводимого текста и сложность слов (легкую, среднюю, сложную) <br>
+Далее отображаются слова, каждый раз в случайном порядке, которые пользователь должен ввести, чтобы узнать свой результат. <br> 
+Под текстом показана клавиатура, на которой подсвечивается символ, который должен быть введен. <br>
+Если пользователь уже сделал несколько попыток - лучшие 5 из них будут отображаться в статистике, показанной прямо под визуальной клавиатурой. <br><br>
+<img width="368" height="339" alt="image" src="https://github.com/user-attachments/assets/37b0efdc-ed57-4fac-917c-28017535b03c" />
+
 
 <h1>Заключение</h1>
 Итоговая оценка веб-приложения "Typing School" <br>

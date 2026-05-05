@@ -12,6 +12,7 @@ export async function getWords() {
   return data;
 }
 
+// Функция для перемешивания массива
 export function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     // Случайный индекс от 0 до i
@@ -21,13 +22,23 @@ export function shuffle(array) {
   }
 }
 
+// Подготовка текста для ввода, инициализация визуальной клавиатуры
 export function preparatoryWork( linesArr, data, incorrectArr ) {
   if (["light", "medium", "hard"].indexOf(data.difficulty) === -1) {
     console.error("Неверный уровень сложности!");
     return;
   }
+  if (data.language !== "ru" && data.language !== "en") {
+    console.error("Неверный язык!");
+    return;
+  }
 
   let wordsArr = data.language === "ru" ? ruWords[data.difficulty] : enWords[data.difficulty];
+  if (!wordsArr || wordsArr.length < 1) {
+    console.error("Массив слов пуст или не найден!");
+    return;
+  }
+
   shuffle(wordsArr);
   formLines(wordsArr, linesArr, 15);
   formateString(linesArr[data.curLine], data.curSymbolIdx, incorrectArr);
@@ -55,7 +66,7 @@ export function formLines(wordsArr, linesArr, wordsInLineCnt) {
     console.error("Недостаточно слов в массиве!");
     return;
   }
-
+  linesArr.length = 0;
   let linesCnt = Math.floor(wordsArr.length / wordsInLineCnt);  
     
   for (let i = 0; i < linesCnt; i++) {
